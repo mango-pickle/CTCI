@@ -1,0 +1,70 @@
+//1.1 Does string have unique characters?
+
+
+#include <iostream>
+#include <string>
+#include<algorithm>
+using namespace std;
+
+// Brute force method
+// No data structure. Sort string
+bool u_nospace( string s)
+{
+    sort(s.begin(), s.end());
+    for(int i = 0; i < s.size()-1; i++)
+    {
+        for(int j = i+1; j < s.size(); j++)
+            if(s[i] == s[j]) 
+                return false;
+    }
+    return true;
+}
+
+// simple bool array that maintains T/F if seen
+bool u_dsOK(const string &s)
+{
+    bool index[256] {false};
+    for(char c : s)
+    {
+        if(index[(int)c]) return false;
+        else index[(int)c] = true;
+    }
+    return true;
+}
+
+// small footprint : single int & bitwise
+bool u_NOds(const string& s)
+{
+    int bitcheck = 0;
+    int char_num = 0;
+    for(char c : s)
+    {
+        char_num = c - 'a';
+        //if seen before, bit set
+        if((bitcheck & 1<<char_num) > 0)
+            return false;
+        else
+            bitcheck |= 1<<char_num;
+    }
+    return true;
+}
+
+int main()
+{
+    string s;
+    cout<<"enter string to check uniqueness";
+    getline(cin, s);
+    
+    if(s.size() == 0)
+        cout<<"empty";
+    
+    // check also max size/ max unique chars
+    
+    
+    cout<<endl<<"No space, brute force says : "<<u_nospace(s)<<endl;
+    
+    cout<<endl<<"Bool array says: "<<u_dsOK(s)<<endl;
+    
+    cout<<endl<<"Bitwise, no DS says :"<< u_NOds(s);
+
+}
