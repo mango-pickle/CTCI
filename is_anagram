@@ -1,0 +1,54 @@
+// anagrams 2 strings
+#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+//#1 : sort & compare
+
+//#2 use maps / freq index
+bool isanagram(const string s1, const string s2)
+{
+    if(s1.size() != s2.size())
+        return false;
+        
+    unordered_map<char, int> index;
+    
+    //freq map of string s1
+    for(char c1 : s1)
+    {
+        if(index.find(c1) != index.end())
+            index[c1]++;
+        else
+            index.insert(pair<char, int>(c1, 1));
+    }
+    
+    // compare s2 with freq map of s1
+    for(char c2 : s2)
+    {
+        if(index.find(c2) != index.end())
+        {
+            index[c2]--;
+            
+            //remove if no more occurances
+            if(index[c2] == 0)
+                index.erase(c2);
+        }
+        else
+            return false;
+    }
+    return true;
+}
+
+int main()
+{
+    cout<<endl<<isanagram("","");
+    cout<<endl<<isanagram("0","");
+    cout<<endl<<isanagram(""," ");
+    cout<<endl<<isanagram("     "," ");
+    cout<<endl<<isanagram("AAAA","aaaa");
+    cout<<endl<<isanagram("a","a ");
+    cout<<endl<<isanagram("abcd","dcba");
+    cout<<endl<<isanagram("aba","abb");
+
+}
