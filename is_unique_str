@@ -49,6 +49,12 @@ bool u_NOds(const string& s)
     return true;
 }
 
+bool u_set(const string &s)
+{
+    set<char> index (s.begin(), s.end());
+    return (index.size() == s.size());
+}
+
 int main()
 {
     string s;
