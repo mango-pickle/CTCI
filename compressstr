@@ -1,0 +1,48 @@
+// compressed string
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+string compress(const string s)
+{
+    int i = 0, count=0;
+    string output;
+    
+    //trivial cases
+    if(s.size() == 0 || s.size() == 1 || s.size() == 2 ) return s;
+    
+    char c = s[0];
+    while(s[i] && s.size() > output.size())
+    {
+        count = 1;
+        c = s[i];
+        i++;
+        while(c == s[i])
+        {
+            i++;
+            count++;
+        }
+        
+        //IMP : to_string
+        output+= c+ to_string(count);
+    }
+    if (s.size() <= output.size()) return s;
+    return output;
+}
+
+int main()
+{
+    cout<<endl<<compress("aaa");
+    cout<<endl<<compress("aaaaaaaa");
+    cout<<endl<<compress("aa");
+    cout<<endl<<compress("a");
+    cout<<endl<<compress("");
+    cout<<endl<<compress("     ");
+    cout<<endl<<compress("aabb");
+    cout<<endl<<compress("aaabb");
+    cout<<endl<<compress("aabbb");
+    cout<<endl<<compress("ab");
+    
+
+}
