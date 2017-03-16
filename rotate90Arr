@@ -1,0 +1,72 @@
+// Rotate 90 degrees
+#include <iostream>
+#include <string>
+using namespace std;
+
+void inputA(int **A, int N)
+{
+    for(int i = 0 ; i < N ; i++)
+    {
+        for(int j =0 ; j < N ; j++)
+        {
+            cin>>A[i][j];
+        }
+    }    
+}
+
+void printA(int **A, int N)
+{
+    //print
+    for(int i = 0 ; i < N ; i++)
+    {
+        for(int j =0 ; j < N ; j++)
+        {
+            cout<<" "<<A[i][j]<<" ";
+        }
+            cout<<endl;
+
+    }
+}
+
+void rotate(int **A, int N)
+{
+    
+    int temp;
+    for(int r = 0; r < N/2; r++)
+        for(int c=r; c < N-1-r; c++)
+        {
+            temp = A[r][c];
+            A[r][c] = A[N-c-1][r];
+            A[N-c-1][r] = A[N-r-1][N-1-c];
+            A[N-r-1][N-1-c] = A[c][N-r-1];
+            A[c][N-r-1] = temp;
+        }        
+}
+
+
+int main()
+{
+    int N;
+    cout<<"Enter sq array size";
+    cin>>N;
+    int **A = new int*[N];
+    for(int  i = 0 ; i < N; i ++)
+        A[i] = new int[N];
+    
+    cout<<"\n\n Enter "<<N<<" X "<<N<<" elements into the array; row wise\n";
+    
+    inputA(A,N);
+    
+    cout<<"\n\n Before rotation:\n";
+    printA(A,N);
+    
+    rotate(A,N);
+    
+    cout<<"\n\n After rotation:\n";
+    printA(A,N);
+    
+    for( int i = 0 ; i< N; i++)
+        delete[] A[i];
+    delete[] A;
+
+}
