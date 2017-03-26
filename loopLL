@@ -1,0 +1,120 @@
+// Example program
+#include <iostream>
+#include <string>
+using namespace std;
+
+template <class T>
+struct ListNode
+{
+    T data;
+    struct ListNode* next;
+};
+
+template <class T>
+bool hasLoop(struct ListNode<T> **head)
+{
+    struct ListNode<T> *slow, *fast;
+    
+    //short list, no loop
+    if(!(*head) || !(*head)->next || !(*head)->next->next)
+        return false;
+        
+    slow = fast = *head;
+    fast = fast->next->next;
+    
+    while(fast->next && fast->next->next)
+    {
+        // Loop if they meet
+        if(slow == fast)
+            return true;
+            
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return false;
+}
+
+template <class T>
+T loopHead(struct ListNode<T> **head)
+{
+    struct ListNode<T> *slow, *fast;
+    slow = fast = *head;
+    fast = fast->next->next;
+    
+    //till the two meet
+    while(slow != fast)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    //slow is at start of loop, k from head, when fast is k into loop
+    
+    fast = *head;
+    while(slow != fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+ 
+    //they now meet at start of loop
+    return fast->next->data;
+
+}
+
+template <class T>
+void addNext(struct ListNode<T> **head, T x)
+{
+    struct ListNode<T> *addNode = new struct ListNode<T>;
+    struct ListNode<T> *cur = *head;
+    addNode->next = NULL;
+    addNode->data = x;
+        
+    //first node
+    if(!(*head))
+    {
+        *head = addNode;
+    }   
+    else
+    {
+        //add to last
+        while(cur->next)
+        {
+            cur= cur->next;
+        }
+        
+        cur->next = addNode;
+
+    }
+}
+
+int main()
+{
+    struct ListNode<int>* head = NULL;
+    addNext(&head, 1);
+    addNext(&head, 2);
+    addNext(&head, 3);
+    
+    //adding loop
+    struct ListNode<int> *x = new ListNode<int>;
+    struct ListNode<int> *y = new ListNode<int>;
+    x->data = 3;
+    x->next = NULL;
+    y->data = 3;
+    y->next = NULL;
+    
+    head->next->next->next = x;
+    x->next = y;
+    y->next = head->next->next;
+    
+    
+    if(hasLoop(&head))
+    {
+        cout<<"Has loop at: \n";
+        cout<<loopHead(&head);
+    }
+    else
+        cout<<"No loop\n";
+    
+  return 0;
+}
